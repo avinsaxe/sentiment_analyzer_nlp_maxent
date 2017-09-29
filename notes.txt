@@ -1,0 +1,6 @@
+>pip install numpy
+>pip install nltk-3.2.1-py2.py3-none-any
+
+python Perceptron.py ../data/imdb1/ 1
+
+python MaxEnt.py ../data/imdb1 ../data/imdb1/ 10
