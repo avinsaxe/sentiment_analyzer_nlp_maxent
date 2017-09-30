@@ -17,13 +17,12 @@
       <file leaf-file-name="MaxEnt.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/python/MaxEnt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="415">
-              <caret line="368" column="55" lean-forward="false" selection-start-line="368" selection-start-column="55" selection-end-line="368" selection-end-column="55" />
+            <state relative-caret-position="436">
+              <caret line="280" column="13" lean-forward="true" selection-start-line="280" selection-start-column="13" selection-end-line="280" selection-end-column="13" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <element signature="e#5364#5686#0" expanded="false" />
-                <element signature="e#5724#5807#0" expanded="false" />
-                <element signature="e#7017#7992#0" expanded="false" />
+                <element signature="e#5575#5897#0" expanded="false" />
+                <element signature="e#5935#6018#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -42,8 +41,8 @@
       <file leaf-file-name="Test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/python/Test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="17" column="26" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="26" />
+            <state relative-caret-position="42">
+              <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -65,7 +64,7 @@
         <entry file="file://$PROJECT_DIR$/data/imdbdummy/neg/cv000_29416.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="498">
-              <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+              <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -134,36 +133,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>maxC</find>
-      <find>print</find>
-      <find>maxWord</find>
-      <find>def class</find>
-      <find>maxWor</find>
-      <find>features</find>
-      <find>max</find>
-      <find>10f</find>
-      <find>posBO</find>
-      <find>print BOW</find>
-      <find>train</find>
-      <find>def train</find>
-      <find>BOW</find>
-      <find>set(</find>
-      <find>addExample</find>
-      <find>lower</find>
-      <find>classify</find>
-      <find>X</find>
-      <find>X=</find>
-      <find>findFeatureMatrixForDataSet</find>
-      <find>stemmer</find>
-      <find>word</find>
-      <find>X=</find>
-      <find>X=</find>
-      <find>findFea</find>
-      <find>summat</find>
       <find>summation</find>
-      <find>print r</find>
-      <find>-</find>
-      <find>summatio</find>
+      <find>BOW</find>
+      <find>random</find>
+      <find>maxW</find>
+      <find>maxC</find>
+      <find>gradient</find>
+      <find>10Fo</find>
+      <find>C</find>
+      <find>Input: neg</find>
+      <find>gradientDescent</find>
+      <find>Input</find>
+      <find>classify</find>
+      <find>maxCo</find>
+      <find>Wrong</find>
+      <find>findF</find>
+      <find>maxWor</find>
+      <find>maxCou</find>
+      <find>Accura</find>
+      <find>weights</find>
+      <find>print</find>
+      <find>BOW</find>
+      <find>features</find>
+      <find>features</find>
+      <find>weight</find>
+      <find>feat</find>
+      <find>feat</find>
+      <find>Accuracy</find>
+      <find>accuracy</find>
+      <find>max</find>
+      <find>cross</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -382,14 +381,14 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17024705" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39929742" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.052094523" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1783029" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -407,43 +406,33 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/python/MaxEnt.py</url>
-          <line>354</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/python/MaxEnt.py</url>
-          <line>400</line>
+          <line>416</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/python/MaxEnt.py</url>
-          <line>167</line>
-          <option name="timeStamp" value="24" />
+          <line>407</line>
+          <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/python/MaxEnt.py</url>
-          <line>179</line>
-          <option name="timeStamp" value="25" />
+          <line>378</line>
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/python/MaxEnt.py</url>
-          <line>188</line>
-          <option name="timeStamp" value="26" />
+          <line>345</line>
+          <option name="timeStamp" value="33" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/python/MaxEnt.py</url>
-          <line>190</line>
-          <option name="timeStamp" value="27" />
+          <line>445</line>
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/python/MaxEnt.py</url>
-          <line>166</line>
-          <option name="timeStamp" value="28" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/python/MaxEnt.py</url>
-          <line>126</line>
-          <option name="timeStamp" value="29" />
+          <line>451</line>
+          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -453,7 +442,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="30" />
+      <option name="time" value="36" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -572,9 +561,8 @@
           <caret line="25" column="4" lean-forward="true" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="4" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#5364#5686#0" expanded="false" />
-            <element signature="e#5724#5807#0" expanded="false" />
-            <element signature="e#7017#7992#0" expanded="false" />
+            <element signature="e#5575#5897#0" expanded="false" />
+            <element signature="e#5935#6018#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -625,9 +613,8 @@
           <caret line="32" column="0" lean-forward="true" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#5364#5686#0" expanded="false" />
-            <element signature="e#5724#5807#0" expanded="false" />
-            <element signature="e#7017#7992#0" expanded="false" />
+            <element signature="e#5575#5897#0" expanded="false" />
+            <element signature="e#5935#6018#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -646,9 +633,8 @@
           <caret line="60" column="13" lean-forward="true" selection-start-line="60" selection-start-column="13" selection-end-line="60" selection-end-column="13" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#5364#5686#0" expanded="false" />
-            <element signature="e#5724#5807#0" expanded="false" />
-            <element signature="e#7017#7992#0" expanded="false" />
+            <element signature="e#5575#5897#0" expanded="false" />
+            <element signature="e#5935#6018#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -709,9 +695,8 @@
           <caret line="12" column="20" lean-forward="true" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#5364#5686#0" expanded="false" />
-            <element signature="e#5724#5807#0" expanded="false" />
-            <element signature="e#7017#7992#0" expanded="false" />
+            <element signature="e#5575#5897#0" expanded="false" />
+            <element signature="e#5935#6018#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -820,18 +805,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/python/Test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="17" column="26" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/imdbdummy/neg/cv000_29416.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="498">
-          <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -876,15 +853,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/python/Test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/python/MaxEnt.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="368" column="55" lean-forward="false" selection-start-line="368" selection-start-column="55" selection-end-line="368" selection-end-column="55" />
+        <state relative-caret-position="436">
+          <caret line="280" column="13" lean-forward="true" selection-start-line="280" selection-start-column="13" selection-end-line="280" selection-end-column="13" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#5364#5686#0" expanded="false" />
-            <element signature="e#5724#5807#0" expanded="false" />
-            <element signature="e#7017#7992#0" expanded="false" />
+            <element signature="e#5575#5897#0" expanded="false" />
+            <element signature="e#5935#6018#0" expanded="false" />
           </folding>
         </state>
       </provider>

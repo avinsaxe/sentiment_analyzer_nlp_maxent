@@ -30,7 +30,7 @@ BOW = set()
 BOW1 = {}
 negBOW = {}
 posBOW = {}
-maxWords=100
+maxWords=20000
 
 stemmer = PorterStemmer()
 
@@ -90,17 +90,23 @@ class Maxent:
     """ TODO
       'words' is a list of words to classify. Return 'pos' or 'neg' classification.
     """
-
-    X= findFeatureMatrixForDataSet(words)
+    X = findFeatureMatrixForDataSet(words)
     probPos=summation(1,X)
-    print "prob Pos ", probPos
     probNeg=summation(0,X)
-    print "prob Neg ", probNeg
-    #print "probPos ",probPos
-    #print "probNeg ",probNeg
-    if(probPos>probNeg):
+    if probPos+probNeg>=0:
       return 'pos'
     return 'neg'
+
+    # X= findFeatureMatrixForDataSet(words)
+    # probPos=summation(1,X)
+    # print "prob Pos ", probPos
+    # probNeg=summation(0,X)
+    # print "prob Neg ", probNeg
+    # #print "probPos ",probPos
+    # #print "probNeg ",probNeg
+    # if(probPos>probNeg):
+    #   return 'pos'
+    # return 'neg'
 
     # Write code here
 
@@ -178,6 +184,7 @@ class Maxent:
       posFeatures=[]
 
       features=list(BOW)
+      features.append('1')
       negFeatures=list(negBOW)
       posFeatures=list(posBOW)
 
@@ -186,13 +193,15 @@ class Maxent:
       X = np.zeros(((n+1),1))   #fills all X with 0s initially. Then start changing X based on input we are talking about in the document
       weights = np.zeros(((n+1),1))
 
+
       weights=np.random.rand(n+1,1)
 
-      # for i in range(n/2,n):
-      #     weights[i]=-weights[i]
-      # for i in range(0,n):
-      #   r=features[i]
-      #   weights[i,0] = -np.random.random()
+      for i in range(n/2,n):
+           weights[i]=-weights[i]
+
+       # for i in range(0,n):
+       #   r=features[i]
+       #   weights[i,0] = -np.random.random()
 
       gradientDescent(splits,epsilon,eta,lambdaa)
       #now we have weights, so we have to find out probability of a dataset belonging to a class
@@ -291,10 +300,11 @@ def test10Fold(args):
   classifier.train(splits, epsilon, eta, lambdaa)
 
   #print "BOW length ", len(BOW)
-  print BOW
   #print weights.transpose()
   #print features
-
+  print "Weights of Features"
+  for i in range(0,len(weights)-1):
+    print features[i]," =  ",weights[i]
 
   for split in splits:
     accuracy = 0.0
@@ -302,7 +312,10 @@ def test10Fold(args):
       words = example.words
       guess = classifier.classify(words)
       if example.klass == guess:
+        print 'Correct Guess ',example.klass
         accuracy += 1.0
+      else:
+        print 'Wrong Guess ',example.klass
     if len(split.test)!=0:
       accuracy = accuracy / len(split.test)
       avgAccuracy += accuracy
@@ -310,6 +323,7 @@ def test10Fold(args):
       fold += 1
   avgAccuracy = avgAccuracy / fold
   print '[INFO]\tAccuracy: %f' % avgAccuracy
+
 
 def classifyDir(trainDir, testDir,iter):
   epsilon = 0.001
@@ -373,7 +387,7 @@ def summation(y,X):
 def gradientDescent(splits,epsilon,eta,lambdaa):
   global weights
   delta=1000000
-  maxCount=30
+  maxCount=100
   count=1
 
   print "Weights ", weights
@@ -394,16 +408,21 @@ def gradientDescent(splits,epsilon,eta,lambdaa):
         X = findFeatureMatrixForDataSet(words)
         posSum=summation(1,X)
         negSum=summation(0,X)
-        dif = negSum - posSum
-        posSum = pow(2.718, dif)
-        negSum=pow(2.718,-dif)
+        dif = negSum + posSum
+        #dif = negSum - posSum
+        #posSum = pow(2.718, -negSum-posSum)
+        #negSum=pow(2.718,posSum+negSum)
+
         prob=1.00000
         if example.klass == 'pos':
           y=1
-          prob=float(1/(1+posSum))
+          prob=float(1/(1+pow(2.718, -negSum-posSum)))
+          #prob=float(1/(1+posSum))
         if example.klass == 'neg': # this keeps updating theta vector or the weights vector
           y=0
-          prob=float(1/(1+negSum))
+          prob=float(1/(1+pow(2.718,posSum+negSum)))
+          #prob=float(1/(1+negSum))
+        print prob
         currentWeights=weights+(eta*(y-prob)*X)/m
         delta=findDelta(weights,currentWeights)
         count=count+1
@@ -422,18 +441,14 @@ def findDelta(weights,currentWeights):
 #returns either 1 or 0 based on if feature is found or not
 
 def findFeatureMatrixForDataSet(words):
-  X=np.zeros(((length),1))
   pos=0
   val=0
-  for i in range(0,len(features)):
-    word=features[i]
-    for w1 in words:
-      w1=stemmer.stem(w1)
-      if w1 == word:
-        val=1
-        break
-
-    X[i,0]=val
+  X=np.zeros((length,1))
+  for word in words:
+    word=stemmer.stem(word.lower())
+    if word in features:
+      i=features.index(word)
+      X[i]=1
   return X
 
 def printResults():
