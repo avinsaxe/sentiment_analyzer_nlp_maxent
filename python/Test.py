@@ -13,3 +13,8 @@ a.add('C')
 print a
 
 print len(a)
+a=set((10,2,2,3,41,5))
+print a
+a= sorted(a, reverse=True)
+
+print a

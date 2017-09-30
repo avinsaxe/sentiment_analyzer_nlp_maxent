@@ -8,6 +8,12 @@ import math
 import operator
 import nltk
 import re
+import nltk.classify.util
+from nltk import word_tokenize
+from nltk.stem.porter import PorterStemmer
+from nltk.corpus import movie_reviews
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 np.set_printoptions(threshold='nan')
 
 global BOW
@@ -18,11 +24,18 @@ global features
 global X
 global weights
 
+
 BOW = set()
-BOW1 = set()
-negBOW = set(['A', 'A'])
-posBOW = set(['A', 'A'])
-maxWords=20000
+#these are maps of word with corresponding counts
+BOW1 = {}
+negBOW = {}
+posBOW = {}
+maxWords=100
+
+stemmer = PorterStemmer()
+
+
+
 
 
 class Maxent:
@@ -54,6 +67,10 @@ class Maxent:
     
     self.numFolds = 10
 
+  class WordCount:
+    def __init__(self):
+      self.word=''
+      self.count=0
 
 
   #############################################################################
@@ -76,9 +93,11 @@ class Maxent:
 
     X= findFeatureMatrixForDataSet(words)
     probPos=summation(1,X)
+    print "prob Pos ", probPos
     probNeg=summation(0,X)
-    print "probPos ",probPos
-    print "probNeg ",probNeg
+    print "prob Neg ", probNeg
+    #print "probPos ",probPos
+    #print "probNeg ",probNeg
     if(probPos>probNeg):
       return 'pos'
     return 'neg'
@@ -99,21 +118,20 @@ class Maxent:
 
     # Write code here
 
-    for r in words:
-       if r not in self.stopwords:
-         if re.match('\w',r) and len(r)>1:
+    for r1 in words:
+       if r1 not in self.stopwords:
+         if re.match('\w',r1) and len(r1)>1:
+            r=stemmer.stem(r1)
             if klass=='pos':
-                posBOW.add(r)
+              if r not in posBOW:
+                posBOW[r.lower()]=1
+              else:
+                posBOW[r.lower()]=posBOW[r.lower()]+1
             elif klass =='neg':
-                negBOW.add(r)
-
-
-
-    # for r in self.BOW:
-    #   print r
-
-    # for r in words:
-    # # text = self.pat/tern.sub('', r)
+              if r not in negBOW:
+                negBOW[r.lower()]=1
+              else:
+                negBOW[r.lower()]=negBOW[r.lower()]+1
 
     pass
 
@@ -131,58 +149,51 @@ class Maxent:
       global weights
       global features
       global BOW1
+      global posBOW
+      global negBOW
+
       for split in splits:
         for example in split.train:
+          if len(posBOW)<maxWords or len(negBOW)<maxWords:
             words = example.words
-            if len(BOW1)<maxWords:
-              self.addExample(example.klass, words)
-              #BOW=set.union(posBOW,negBOW)
-              BOW1=set.difference(set.union(posBOW,negBOW),set.intersection(posBOW,negBOW))
-              # here we took negBOW union posBOW - negBOW intersection posBOW
-            else:
-              break
-        #here we will have BOW initialized
+            self.addExample(example.klass, words)
+          else:
+            break
+
       i=0
-      for word1 in BOW1:
-        if i<maxWords:
-          BOW.add(word1)
-          i=i+1
-        else:
-          break
+
+      posBOW = sorted(posBOW,key=posBOW.get, reverse=True) #sort the map of BOW1 based on value of each key in descending order
+      negBOW = sorted(negBOW, key=negBOW.get,reverse=True)  # sort the map of BOW1 based on value of each key in descending order
+      list1=posBOW[:maxWords / 2]+list(negBOW[:maxWords / 2])
+      BOW=set(list1)
+      print "BOW "
+      print BOW
       global posFeatures
       global negFeatures
       #TODO now we have to train our classifiers
       n=len(BOW)
       #print "Length is ",n
-      BOW.add('A')  #added 1 as a represetation of [f0]  {f0,f1,f2,f3,...f}
       features = []
       negFeatures=[]
       posFeatures=[]
 
-      for elem in list(BOW):
-        features.append(elem)
-      for elem in list(negBOW):
-        negFeatures.append(elem)
-      for elem in list(posBOW):
-        posFeatures.append(elem)
+      features=list(BOW)
+      negFeatures=list(negBOW)
+      posFeatures=list(posBOW)
 
       global length
       length=n+1
       X = np.zeros(((n+1),1))   #fills all X with 0s initially. Then start changing X based on input we are talking about in the document
       weights = np.zeros(((n+1),1))
 
+      weights=np.random.rand(n+1,1)
 
-      for i in range(0,n):
-        r=features[i]
-        val = np.random.choice(5, 1, replace=False, p=[0.1, 0, 0.3, 0.6, 0])
-        if r in negFeatures:
-          weights[i,0] = -np.random.random()
-  #np.random.shuffle([0.3,0.4,0.1,0.2,0.7,0.6]);
-        if r in posFeatures:
-          weights[i,0] = np.random.random()
-          #np.random.shuffle([0.3,0.4,0.1,0.2,0.7,0.6]);  #np.random.shuffle([-1,-2,-3,-1.5,-2.5,-3.5]);
+      # for i in range(n/2,n):
+      #     weights[i]=-weights[i]
+      # for i in range(0,n):
+      #   r=features[i]
+      #   weights[i,0] = -np.random.random()
 
-      #Ideally gradient descent should give me appropriate weights, so that we can test the test set on it
       gradientDescent(splits,epsilon,eta,lambdaa)
       #now we have weights, so we have to find out probability of a dataset belonging to a class
 
@@ -270,7 +281,7 @@ class Maxent:
 def test10Fold(args):
   pt = Maxent()
   epsilon=0.01
-  eta=1
+  eta=0.01
   lambdaa=10
   iterations = int(args[1])
   splits = pt.crossValidationSplits(args[0])
@@ -280,7 +291,7 @@ def test10Fold(args):
   classifier.train(splits, epsilon, eta, lambdaa)
 
   #print "BOW length ", len(BOW)
-  #print BOW
+  print BOW
   #print weights.transpose()
   #print features
 
@@ -337,27 +348,27 @@ def summation(y,X):
   # expPower=float(pow(2.718,-power1))
   # value=float(((1)/(1+expPower)))
   # value=value-y
-
   #lambda1 -> weight in pos class
   #f1 -> frequency of word in document
   #X -> the actual document represented in terms of frequency for each feature. We only select features which are of positive class
     product=1
     global posFeatures
-    #print X.transpose()
-    sum1=0.000000
-    for i in range(0,len(X)):
-      feature=features[i]  #we fetch the feature
-      arr=np.array((weights[i] * X[i]))[0].tolist()
-      #print arr
-      if y==1 and feature in posFeatures:
-        #val=np.power(2.718,arr[0])  # e^{lambda_i * f_i}
-        sum1=sum1+arr
-      if y==0 and feature in negFeatures:
-        #val=np.power(2.718,arr[0])
-        sum1=sum1+arr
-    if product>0:
-      return float(sum1)
-    return 0.0
+    posFeaturesMatrix=np.zeros(((length),1))
+    for i in range(0,length/2):
+      posFeaturesMatrix[i]=1
+    negFeaturesMatrix = np.zeros(((length), 1))
+    for i in range(length/2,length):
+      negFeaturesMatrix[i]=1
+
+
+
+    if y==1:
+      posFeaturesMatrix=np.multiply(posFeaturesMatrix,X)
+      arr=np.dot(weights.transpose(),posFeaturesMatrix)
+    else:
+      negFeaturesMatrix=np.multiply(negFeaturesMatrix,X)
+      arr=np.dot(weights.transpose(),negFeaturesMatrix)
+    return float(arr[0,0])
 
 def gradientDescent(splits,epsilon,eta,lambdaa):
   global weights
@@ -365,16 +376,14 @@ def gradientDescent(splits,epsilon,eta,lambdaa):
   maxCount=30
   count=1
 
+  print "Weights ", weights
+  print "features ",features
   #while delta>epsilon:
   print "*********gradient descent started***********"
   while delta>epsilon and count <maxCount :
     #print "Iteration ",delta
     i=0
     for split in splits:
-      #print "iteration ",count
-      #print "Slit ",i
-      i=i+1
-
       m=len(split.train)
       sumMatFinal=np.zeros(((length),1))
       currentWeights=np.zeros(((length),1))
@@ -383,8 +392,6 @@ def gradientDescent(splits,epsilon,eta,lambdaa):
           break
         words = example.words  #each document
         X = findFeatureMatrixForDataSet(words)
-        factor=np.ones((length,1))
-        #X=X+factor
         posSum=summation(1,X)
         negSum=summation(0,X)
         dif = negSum - posSum
@@ -394,15 +401,16 @@ def gradientDescent(splits,epsilon,eta,lambdaa):
         if example.klass == 'pos':
           y=1
           prob=float(1/(1+posSum))
-          #print "Probability positive ",prob
         if example.klass == 'neg': # this keeps updating theta vector or the weights vector
           y=0
           prob=float(1/(1+negSum))
-          #print "Probability negative ", prob
         currentWeights=weights+(eta*(y-prob)*X)/m
         delta=findDelta(weights,currentWeights)
         count=count+1
         weights = currentWeights
+      i=i+1
+
+  printResults()
 
 def findDelta(weights,currentWeights):
   max=0
@@ -411,14 +419,26 @@ def findDelta(weights,currentWeights):
       max=np.abs(weights[i,0]-currentWeights[i,0])
   return max
 
+#returns either 1 or 0 based on if feature is found or not
+
 def findFeatureMatrixForDataSet(words):
   X=np.zeros(((length),1))
   pos=0
+  val=0
   for i in range(0,len(features)):
     word=features[i]
-    X[pos,0]=words.count(word)
-    pos=pos+1
+    for w1 in words:
+      w1=stemmer.stem(w1)
+      if w1 == word:
+        val=1
+        break
+
+    X[i,0]=val
   return X
+
+def printResults():
+  print "Weight Array "
+  print weights.transpose()
 
 def main():
   (options, args) = getopt.getopt(sys.argv[1:], '')
