@@ -22,7 +22,7 @@ BOW = set()
 BOW1 = set()
 negBOW = set(['A', 'A'])
 posBOW = set(['A', 'A'])
-maxWords=1000
+maxWords=20000
 
 
 class Maxent:
@@ -75,11 +75,11 @@ class Maxent:
     """
 
     X= findFeatureMatrixForDataSet(words)
-    power = np.dot(weights.transpose(), X)  # theta transpose * X where theta is weight
-    power1 = power[0, 0]  # first element
-    expPower = float(pow(2.718, -power1))
-    value = float(((1) / (1 + expPower)))
-    if value>=0.5:
+    probPos=summation(1,X)
+    probNeg=summation(0,X)
+    print "probPos ",probPos
+    print "probNeg ",probNeg
+    if(probPos>probNeg):
       return 'pos'
     return 'neg'
 
@@ -149,7 +149,8 @@ class Maxent:
           i=i+1
         else:
           break
-
+      global posFeatures
+      global negFeatures
       #TODO now we have to train our classifiers
       n=len(BOW)
       #print "Length is ",n
@@ -175,9 +176,11 @@ class Maxent:
         r=features[i]
         val = np.random.choice(5, 1, replace=False, p=[0.1, 0, 0.3, 0.6, 0])
         if r in negFeatures:
-          weights[i,0] = -float(val)#np.random.shuffle([1,2,3,1.5,2.5,3.5]);
+          weights[i,0] = -np.random.random()
+  #np.random.shuffle([0.3,0.4,0.1,0.2,0.7,0.6]);
         if r in posFeatures:
-          weights[i,0] = float(val)#np.random.shuffle([-1,-2,-3,-1.5,-2.5,-3.5]);
+          weights[i,0] = np.random.random()
+          #np.random.shuffle([0.3,0.4,0.1,0.2,0.7,0.6]);  #np.random.shuffle([-1,-2,-3,-1.5,-2.5,-3.5]);
 
       #Ideally gradient descent should give me appropriate weights, so that we can test the test set on it
       gradientDescent(splits,epsilon,eta,lambdaa)
@@ -268,7 +271,7 @@ def test10Fold(args):
   pt = Maxent()
   epsilon=0.01
   eta=1
-  lambdaa=0.1
+  lambdaa=10
   iterations = int(args[1])
   splits = pt.crossValidationSplits(args[0])
   avgAccuracy = 0.0
@@ -328,7 +331,7 @@ def classifyDir(trainDir, testDir,iter):
 # matrix like ([1/(1+e-thatax)]-y)*X
 def summation(y,X):
   #just find summation over lambda, and then take power of exponent
-
+    global weights
   # power=np.dot(weights.transpose(),X)  # theta transpose * X where theta is weight
   # power1=power[0,0]  #first element
   # expPower=float(pow(2.718,-power1))
@@ -339,20 +342,27 @@ def summation(y,X):
   #f1 -> frequency of word in document
   #X -> the actual document represented in terms of frequency for each feature. We only select features which are of positive class
     product=1
-    for i in (0,len(X)-1):
+    global posFeatures
+    #print X.transpose()
+    sum1=0.000000
+    for i in range(0,len(X)):
       feature=features[i]  #we fetch the feature
-      if y==1 and feature in posBOW:
-        val=np.power(2.718,weights[i]*X[i])  # e^{lambda_i * f_i}
-        product=product*val
-      if y==0 and feature in negBOW:
-        val=np.power(2.718,weights[i]*X[i])
-        product=product*val
-    return product
+      arr=np.array((weights[i] * X[i]))[0].tolist()
+      #print arr
+      if y==1 and feature in posFeatures:
+        #val=np.power(2.718,arr[0])  # e^{lambda_i * f_i}
+        sum1=sum1+arr
+      if y==0 and feature in negFeatures:
+        #val=np.power(2.718,arr[0])
+        sum1=sum1+arr
+    if product>0:
+      return float(sum1)
+    return 0.0
 
 def gradientDescent(splits,epsilon,eta,lambdaa):
   global weights
   delta=1000000
-  maxCount=1000
+  maxCount=30
   count=1
 
   #while delta>epsilon:
@@ -369,30 +379,34 @@ def gradientDescent(splits,epsilon,eta,lambdaa):
       sumMatFinal=np.zeros(((length),1))
       currentWeights=np.zeros(((length),1))
       for example in split.train:
+        if count>maxCount:
+          break
         words = example.words  #each document
         X = findFeatureMatrixForDataSet(words)
         factor=np.ones((length,1))
-        X=X+factor
+        #X=X+factor
         posSum=summation(1,X)
         negSum=summation(0,X)
-
-        prob=0.00000
-        if example.klass=='pos':
+        dif = negSum - posSum
+        posSum = pow(2.718, dif)
+        negSum=pow(2.718,-dif)
+        prob=1.00000
+        if example.klass == 'pos':
           y=1
-          prob=float(posSum/(posSum+negSum))
+          prob=float(1/(1+posSum))
+          #print "Probability positive ",prob
         if example.klass == 'neg': # this keeps updating theta vector or the weights vector
           y=0
-          prob=float(negSum/(posSum+negSum))
+          prob=float(1/(1+negSum))
+          #print "Probability negative ", prob
         currentWeights=weights+(eta*(y-prob)*X)/m
         delta=findDelta(weights,currentWeights)
         count=count+1
         weights = currentWeights
-        print "Weights at ith iteration ",weights.transpose()
-
 
 def findDelta(weights,currentWeights):
   max=0
-  for i in (0,length-1):
+  for i in range(0,length):
     if np.abs(weights[i,0]-currentWeights[i,0])>max:
       max=np.abs(weights[i,0]-currentWeights[i,0])
   return max
@@ -400,11 +414,12 @@ def findDelta(weights,currentWeights):
 def findFeatureMatrixForDataSet(words):
   X=np.zeros(((length),1))
   pos=0
-  for i in (0,len(features)-1):
+  for i in range(0,len(features)):
     word=features[i]
     X[pos,0]=words.count(word)
     pos=pos+1
   return X
+
 def main():
   (options, args) = getopt.getopt(sys.argv[1:], '')
   if len(args) == 3:
