@@ -23,7 +23,8 @@ global posBOW
 global features
 global X
 global weights
-
+global positiveWords
+global negativeWords
 
 BOW = set()
 #these are maps of word with corresponding counts
@@ -31,6 +32,8 @@ BOW1 = {}
 negBOW = {}
 posBOW = {}
 maxWords=20000
+positiveWords={}
+negativeWords={}
 
 stemmer = PorterStemmer()
 
@@ -291,7 +294,7 @@ def test10Fold(args):
   pt = Maxent()
   epsilon=0.01
   eta=0.01
-  lambdaa=10
+  lambdaa=2
   iterations = int(args[1])
   splits = pt.crossValidationSplits(args[0])
   avgAccuracy = 0.0
@@ -423,7 +426,7 @@ def gradientDescent(splits,epsilon,eta,lambdaa):
           prob=float(1/(1+pow(2.718,posSum+negSum)))
           #prob=float(1/(1+negSum))
         print prob
-        currentWeights=weights+(eta*(y-prob)*X)/m
+        currentWeights=weights+(eta*((-lambdaa*weights)+(y-prob)*X))/m
         delta=findDelta(weights,currentWeights)
         count=count+1
         weights = currentWeights

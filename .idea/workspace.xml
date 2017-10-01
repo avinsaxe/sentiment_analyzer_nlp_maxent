@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2d54c875-ec4f-4e5e-a025-19ae9e6c3c68" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/python/MaxEnt.py" afterPath="$PROJECT_DIR$/python/MaxEnt.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/python/Test.py" afterPath="$PROJECT_DIR$/python/Test.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/python/Perceptron.py" afterPath="$PROJECT_DIR$/python/Perceptron.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,15 +14,15 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="MaxEnt.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MaxEnt.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/python/MaxEnt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="436">
-              <caret line="280" column="13" lean-forward="true" selection-start-line="280" selection-start-column="13" selection-end-line="280" selection-end-column="13" />
+            <state relative-caret-position="184">
+              <caret line="386" column="55" lean-forward="true" selection-start-line="386" selection-start-column="6" selection-end-line="386" selection-end-column="55" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <element signature="e#5575#5897#0" expanded="false" />
-                <element signature="e#5935#6018#0" expanded="false" />
+                <element signature="e#5650#5972#0" expanded="false" />
+                <element signature="e#6010#6093#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -110,11 +110,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Perceptron.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Perceptron.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/python/Perceptron.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="470">
-              <caret line="133" column="13" lean-forward="false" selection-start-line="133" selection-start-column="13" selection-end-line="133" selection-end-column="13" />
+            <state relative-caret-position="267">
+              <caret line="167" column="7" lean-forward="false" selection-start-line="167" selection-start-column="7" selection-end-line="167" selection-end-column="7" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -133,36 +133,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>summation</find>
-      <find>BOW</find>
-      <find>random</find>
-      <find>maxW</find>
-      <find>maxC</find>
-      <find>gradient</find>
-      <find>10Fo</find>
-      <find>C</find>
-      <find>Input: neg</find>
       <find>gradientDescent</find>
-      <find>Input</find>
-      <find>classify</find>
-      <find>maxCo</find>
-      <find>Wrong</find>
-      <find>findF</find>
-      <find>maxWor</find>
-      <find>maxCou</find>
-      <find>Accura</find>
-      <find>weights</find>
-      <find>print</find>
-      <find>BOW</find>
-      <find>features</find>
-      <find>features</find>
-      <find>weight</find>
-      <find>feat</find>
-      <find>feat</find>
-      <find>Accuracy</find>
+      <find>10Fo</find>
+      <find>accurac</find>
       <find>accuracy</find>
-      <find>max</find>
-      <find>cross</find>
+      <find>lambda</find>
+      <find>classifyDir</find>
+      <find>def trai</find>
+      <find>train</find>
+      <find>weights</find>
+      <find>def train</find>
+      <find>addExample</find>
+      <find>rando</find>
+      <find>stopWo</find>
+      <find>Perce</find>
+      <find>negBOW</find>
+      <find>posBOW</find>
+      <find>addEx</find>
+      <find>findF</find>
+      <find>length</find>
+      <find>features</find>
+      <find>findFe</find>
+      <find>count</find>
+      <find>X=</find>
+      <find>np.mu</find>
+      <find>posFeaturesMatrix</find>
+      <find>np.mult</find>
+      <find>iterati</find>
+      <find>accura</find>
+      <find>print</find>
+      <find>weight</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -176,6 +176,7 @@
         <option value="$PROJECT_DIR$/python/TestFunctions.py" />
         <option value="$PROJECT_DIR$/python/Test.py" />
         <option value="$PROJECT_DIR$/python/MaxEnt.py" />
+        <option value="$PROJECT_DIR$/python/Perceptron.py" />
       </list>
     </option>
   </component>
@@ -257,7 +258,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.MaxEnt">
+  <component name="RunManager" selected="Python.Perceptron">
     <configuration name="MaxEnt" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -288,7 +289,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="sentimentAnalyzer" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/python/Perceptron.py" />
-      <option name="PARAMETERS" value="../data/imdb1/ 1" />
+      <option name="PARAMETERS" value="../data/imdbdummy/ 10" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
@@ -352,9 +353,9 @@
     </list>
     <recent_temporary>
       <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Python.Test" />
-        <item index="1" class="java.lang.String" itemvalue="Python.TestFunctions" />
-        <item index="2" class="java.lang.String" itemvalue="Python.Perceptron" />
+        <item index="0" class="java.lang.String" itemvalue="Python.Perceptron" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Test" />
+        <item index="2" class="java.lang.String" itemvalue="Python.TestFunctions" />
       </list>
     </recent_temporary>
   </component>
@@ -406,32 +407,32 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/python/MaxEnt.py</url>
-          <line>416</line>
+          <line>419</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/python/MaxEnt.py</url>
-          <line>407</line>
+          <line>410</line>
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/python/MaxEnt.py</url>
-          <line>378</line>
+          <line>381</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/python/MaxEnt.py</url>
-          <line>345</line>
+          <line>348</line>
           <option name="timeStamp" value="33" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/python/MaxEnt.py</url>
-          <line>445</line>
+          <line>448</line>
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/python/MaxEnt.py</url>
-          <line>451</line>
+          <line>454</line>
           <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
@@ -442,7 +443,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="36" />
+      <option name="time" value="37" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -561,8 +562,8 @@
           <caret line="25" column="4" lean-forward="true" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="4" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#5575#5897#0" expanded="false" />
-            <element signature="e#5935#6018#0" expanded="false" />
+            <element signature="e#5650#5972#0" expanded="false" />
+            <element signature="e#6010#6093#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -613,8 +614,8 @@
           <caret line="32" column="0" lean-forward="true" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#5575#5897#0" expanded="false" />
-            <element signature="e#5935#6018#0" expanded="false" />
+            <element signature="e#5650#5972#0" expanded="false" />
+            <element signature="e#6010#6093#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -633,8 +634,8 @@
           <caret line="60" column="13" lean-forward="true" selection-start-line="60" selection-start-column="13" selection-end-line="60" selection-end-column="13" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#5575#5897#0" expanded="false" />
-            <element signature="e#5935#6018#0" expanded="false" />
+            <element signature="e#5650#5972#0" expanded="false" />
+            <element signature="e#6010#6093#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -695,8 +696,8 @@
           <caret line="12" column="20" lean-forward="true" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#5575#5897#0" expanded="false" />
-            <element signature="e#5935#6018#0" expanded="false" />
+            <element signature="e#5650#5972#0" expanded="false" />
+            <element signature="e#6010#6093#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -785,26 +786,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/python/Perceptron.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="470">
-          <caret line="133" column="13" lean-forward="false" selection-start-line="133" selection-start-column="13" selection-end-line="133" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python/TestFunctions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="13" column="25" lean-forward="false" selection-start-line="13" selection-start-column="25" selection-end-line="13" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/imdbdummy/neg/cv000_29416.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="498">
@@ -853,6 +834,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/python/TestFunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="13" column="25" lean-forward="false" selection-start-line="13" selection-start-column="25" selection-end-line="13" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/python/Test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="42">
@@ -863,12 +854,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/python/MaxEnt.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="280" column="13" lean-forward="true" selection-start-line="280" selection-start-column="13" selection-end-line="280" selection-end-column="13" />
+        <state relative-caret-position="184">
+          <caret line="386" column="55" lean-forward="true" selection-start-line="386" selection-start-column="6" selection-end-line="386" selection-end-column="55" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#5575#5897#0" expanded="false" />
-            <element signature="e#5935#6018#0" expanded="false" />
+            <element signature="e#5650#5972#0" expanded="false" />
+            <element signature="e#6010#6093#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python/Perceptron.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="167" column="7" lean-forward="false" selection-start-line="167" selection-start-column="7" selection-end-line="167" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
