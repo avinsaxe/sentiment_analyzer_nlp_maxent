@@ -1,20 +1,14 @@
-import sys
-import getopt
 import os
-from fractions import Fraction
-
 import numpy as np
-import math
-import operator
 import nltk
-import re
 import nltk.classify.util
-from nltk import word_tokenize
 from nltk.stem.porter import PorterStemmer
-from nltk.corpus import movie_reviews
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 np.set_printoptions(threshold='nan')
+from nltk.corpus import opinion_lexicon
+nltk.download('opinion_lexicon')
+
+
+
 
 global BOW
 global maxWords
@@ -26,17 +20,34 @@ global weights
 global positiveWords
 global negativeWords
 global XMap
+global wordCount
 
+
+#**********Section of Input Starts*********************
+global maxWords
+global epsilon
+global eta
+global lambdaa
+global maxCount
+epsilon=0.001
+eta=0.01
+lambdaa=0.1
+maxCount=-1
+maxWords=int(-1)
+
+#**********Section of Input Ends*********************
+
+wordCount=0
 XMap={'A':'B'}
 BOW = set()
 #these are maps of word with corresponding counts
 BOW1 = {}
 negBOW = {}
 posBOW = {}
-maxWords=20000
 positiveWords={}
 negativeWords={}
-
+negatives=opinion_lexicon.negative()
+positives=opinion_lexicon.positive()
 stemmer = PorterStemmer()
 
 
@@ -102,16 +113,6 @@ class Maxent:
       return 'pos'
     return 'neg'
 
-    # X= findFeatureMatrixForDataSet(words)
-    # probPos=summation(1,X)
-    # print "prob Pos ", probPos
-    # probNeg=summation(0,X)
-    # print "prob Neg ", probNeg
-    # #print "probPos ",probPos
-    # #print "probNeg ",probNeg
-    # if(probPos>probNeg):
-    #   return 'pos'
-    # return 'neg'
 
     # Write code here
 
@@ -128,22 +129,24 @@ class Maxent:
     """
 
     # Write code here
-
+    global wordCount
     for r1 in words:
-       if r1 not in self.stopwords:
-         if re.match('\w',r1) and len(r1)>1:
             r=stemmer.stem(r1)
-            if klass=='pos':
+            #print "Word Count ******* ", wordCount
+            if klass=='pos' and r in positives:
               if r not in posBOW:
                 posBOW[r.lower()]=1
               else:
                 posBOW[r.lower()]=posBOW[r.lower()]+1
-            elif klass =='neg':
+              #print "Positive ",r.lower(), " ", posBOW[r.lower()]
+              wordCount=wordCount+1
+            elif klass =='neg' and r in negatives:
               if r not in negBOW:
                 negBOW[r.lower()]=1
               else:
                 negBOW[r.lower()]=negBOW[r.lower()]+1
-
+              #print "Negative ", r.lower(), " ", negBOW[r.lower()]
+              wordCount = wordCount + 1
     pass
 
   """This function is for training the classifier. This is called after negative and positive documents are added to the split"""
@@ -162,36 +165,39 @@ class Maxent:
       global BOW1
       global posBOW
       global negBOW
+      global wordCount
+      global length
+
+      posBOW={}
+      negBOW={}
+      wordCount=0
+      for w1 in positives:
+        posBOW[w1]=1
+      for w1 in negatives:
+        negBOW[w1] = 1
+      wordCount=len(posBOW)+len(negBOW)
 
       for split in splits:
         for example in split.train:
-          if len(posBOW)<maxWords or len(negBOW)<maxWords:
+          if (maxWords > 0 and wordCount < maxWords):
             words = example.words
             self.addExample(example.klass, words)
-          else:
+          elif maxWords < 0:
+            words = example.words
+            self.addExample(example.klass, words)
+          elif maxWords > 0 and wordCount >= maxWords:
             break
 
       i=0
 
-      posBOW = sorted(posBOW,key=posBOW.get, reverse=True) #sort the map of BOW1 based on value of each key in descending order
-      negBOW = sorted(negBOW, key=negBOW.get,reverse=True)  # sort the map of BOW1 based on value of each key in descending order
-      if maxWords>0 and maxWords<len(posBOW):
-        list1 = posBOW[:maxWords / 2]
-      else:
-          list1=list(posBOW)
-      if maxWords>0 and maxWords<len(negBOW):
-        list1=list1+list(negBOW[:maxWords / 2])
-      else:
-          list1=list1+list(negBOW)
 
-      BOW=set(list1)
-      print "BOW "
-      print BOW
+      BOW=list(negBOW.keys())
+      BOW=BOW+list(posBOW.keys())
+#      BOW=set(posBOWList+negBOWList)
       global posFeatures
       global negFeatures
       #TODO now we have to train our classifiers
       n=len(BOW)
-      #print "Length is ",n
       features = []
       negFeatures=[]
       posFeatures=[]
@@ -201,16 +207,21 @@ class Maxent:
       negFeatures=list(negBOW)
       posFeatures=list(posBOW)
 
-      global length
       length=n+1
-      X = np.zeros(((n+1),1))   #fills all X with 0s initially. Then start changing X based on input we are talking about in the document
-      weights = np.zeros(((n+1),1))
+      X = np.zeros((n+1,1))   #fills all X with 0s initially. Then start changing X based on input we are talking about in the document
+      weights = np.zeros((n+1,1))
+
+      for f in features:
+        if f in posBOW:
+          weights[features.index(f)]=posBOW.get(f)
+        if f in negBOW:
+          weights[features.index(f)]=-negBOW.get(f)
 
 
-      weights=np.random.rand(n+1,1)/10
+     # weights=np.random.rand(n+1,1)/10
 
-      for i in range(n/2,n+1):
-           weights[i]=-weights[i]
+    #  for i in range(n/2,n+1):
+     #      weights[i]=-weights[i]
 
        # for i in range(0,n):
        #   r=features[i]
@@ -300,24 +311,24 @@ class Maxent:
 
 
 
-def test10Fold(args):
+def test10Fold(epsilon1,eta1,trainDir1,testDir1,maxWords1,maxCount1):
+  global epsilon,eta,trainDir,testDir,maxWords,maxCount
+  epsilon=epsilon1
+  eta=eta1
+  trainDir=trainDir1
+  testDir=testDir1
+  maxWords=maxWords1
+  maxCount=maxCount1
   pt = Maxent()
-  epsilon=0.01
-  eta=0.01
-  lambdaa=2
-  iterations = int(args[1])
-  splits = pt.crossValidationSplits(args[0])
+  splits = pt.crossValidationSplits(trainDir)
   avgAccuracy = 0.0
   fold = 0
   classifier = Maxent()
   classifier.train(splits, epsilon, eta, lambdaa)
 
-  #print "BOW length ", len(BOW)
-  #print weights.transpose()
-  #print features
-  print "Weights of Features"
-  for i in range(0,len(weights)-1):
-    print features[i]," =  ",weights[i]
+  # print "Weights of Features"
+  # for i in range(0,len(weights)-1):
+  #   print features[i]," =  ",weights[i]
 
   for split in splits:
     accuracy = 0.0
@@ -335,20 +346,22 @@ def test10Fold(args):
   print '[INFO]\tAccuracy: %f' % avgAccuracy
 
 
-def classifyDir(trainDir, testDir,iter):
-  epsilon = 0.001
-  eta = 0.001
-  lambdaa = 0.001
-  classifier = Maxent()
-  trainSplit = classifier.trainSplit(trainDir)   #simply partitions data into positive and negative files for training directory
-  #trainSplit contains set of array as {{word: [w1,w2,w3,...],klass:pos}}
+def classifyDir(epsilon1, eta1, trainDir1, testDir1, maxWords1, maxCount1):
+  global epsilon, eta, delta, trainDir, testDir, maxWords, maxCount
+  epsilon = epsilon1
+  eta = eta1
 
-  iterations = int(iter)  # changing string iter to integer
-  classifier.train(trainSplit, epsilon, eta, lambdaa)  #TODO no training has been defined yet
-  # after classifier.train() step, using trainSplit, our classifier will be trained and then it will be used to test, testDir in next step
+  trainDir = trainDir1
+  testDir = testDir1
+  maxWords = maxWords1
+  maxCount = maxCount1
+  pt = Maxent()
+  splits = pt.crossValidationSplits(trainDir)
+  classifier = Maxent()
+
+  classifier.train(splits, epsilon, eta, lambdaa)  #TODO no training has been defined yet
 
   testSplit = classifier.trainSplit(testDir)  #again repeating same thing for testing directory
-  #testFile = classifier.readFile(testFilePath)
   accuracy = 0.0
 
   #Training data has created the model first, now we are predicting on test data for understanding the accuracy.
@@ -367,14 +380,6 @@ def classifyDir(trainDir, testDir,iter):
 def summation(y,X):
   #just find summation over lambda, and then take power of exponent
     global weights
-  # power=np.dot(weights.transpose(),X)  # theta transpose * X where theta is weight
-  # power1=power[0,0]  #first element
-  # expPower=float(pow(2.718,-power1))
-  # value=float(((1)/(1+expPower)))
-  # value=value-y
-  #lambda1 -> weight in pos class
-  #f1 -> frequency of word in document
-  #X -> the actual document represented in terms of frequency for each feature. We only select features which are of positive class
     product=1
     global posFeatures
     posFeaturesMatrix=np.zeros(((length),1))
@@ -383,9 +388,6 @@ def summation(y,X):
     negFeaturesMatrix = np.zeros(((length), 1))
     for i in range(length/2,length):
       negFeaturesMatrix[i]=1
-
-
-
     if y==1:
       posFeaturesMatrix=np.multiply(posFeaturesMatrix,X)
       arr=np.dot(weights.transpose(),posFeaturesMatrix)
@@ -396,15 +398,16 @@ def summation(y,X):
 
 def gradientDescent(splits,epsilon,eta,lambdaa):
   global weights
+  global wordCount
   delta=1000000
-  maxCount=500
-  count=1
-
-  print "Weights ", weights
-  print "features ",features
+  global maxCount
+  count=0
+  wordCount=len(posBOW)+len(negBOW)
+  #print "Weights ", weights
+  #print "features ",features
   #while delta>epsilon:
   print "*********gradient descent started***********"
-  while delta>epsilon and count <maxCount :
+  while delta>epsilon and (count <maxCount or maxCount<0) :
     #print "Iteration ",delta
     i=0
     for split in splits:
@@ -433,13 +436,11 @@ def gradientDescent(splits,epsilon,eta,lambdaa):
           y=0
           prob=float(1/(1+pow(2.718,posSum+negSum)))
           #prob=float(1/(1+negSum))
-        print prob
+        #print prob
         currentWeights=weights+(eta*((-lambdaa*weights)+(y-prob)*X))/m
         delta=findDelta(weights,currentWeights)
         count=count+1
         weights = currentWeights
-
-  printResults()
 
 def findDelta(weights,currentWeights):
   max=0
@@ -470,14 +471,14 @@ def printResults():
   print "Weight Array "
   print weights.transpose()
 
-def main():
-  (options, args) = getopt.getopt(sys.argv[1:], '')
-  if len(args) == 3:
-    classifyDir(args[0], args[1], args[2])
-  elif len(args) == 2:
-    test10Fold(args)
+def main(methodName,epsilon,eta,maxCount,maxWords,testDir,trainDir):
 
+  if methodName=='classifyDir':
+    classifyDir(epsilon,eta,trainDir,testDir,maxWords,maxCount)
+  elif methodName=='test10Fold':
+    test10Fold(epsilon,eta,trainDir,testDir,maxWords,maxCount)
 
 
 if __name__ == "__main__":
-    main()
+    #main('test10Fold', 0.1, 2, 50, 1000, '../data/imdb1') #test10Fold takes only training directory and uses 10 fold to solve it
+    main('classifyDir',0.1,2,50,10000,'../data/imdb1','../data/imdb1')
