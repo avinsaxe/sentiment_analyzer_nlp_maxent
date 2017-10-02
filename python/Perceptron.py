@@ -15,7 +15,7 @@ from nltk.corpus import movie_reviews
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 np.set_printoptions(threshold='nan')
-
+np.set_printoptions(suppress=True)
 global BOW
 global maxWords
 global negBOW
@@ -25,17 +25,24 @@ global X
 global weights
 global positiveWords
 global negativeWords
+global XMap
+global eta
 
 BOW = set()
 #these are maps of word with corresponding counts
 BOW1 = {}
 negBOW = {}
 posBOW = {}
-maxWords=20000
+maxWords=int(10000)
 positiveWords={}
 negativeWords={}
-
+XMap={'A':'B'}  #Map of X for all the documents
+eta=1
 stemmer = PorterStemmer()
+weights=[]
+
+
+unit_step = lambda x: 0 if x < 0 else 1
 
 class Perceptron:
   stopwords = nltk.corpus.stopwords.words('english')
@@ -67,7 +74,8 @@ class Perceptron:
     """ TODO
       'words' is a list of words to classify. Return 'pos' or 'neg' classification.
     """
-    X=findFeatureMatrixForDataSet(words)
+    documentId=None
+    X=findFeatureMatrixForDataSet(words,documentId)
     arr=np.dot(X.transpose(),weights)
     score=arr[0,0]
     if score>=0:
@@ -92,9 +100,10 @@ class Perceptron:
     global BOW1
     global posBOW
     global negBOW
-    posBOW={}
-    negBOW={}
+    global maxWords
+
     # Write code here
+    #print "MaxWords ",maxWords
     for r1 in words:
        if r1 not in self.stopwords:
          if re.match('\w',r1) and len(r1)>1:
@@ -110,7 +119,7 @@ class Perceptron:
               else:
                 negBOW[r.lower()]=negBOW[r.lower()]+1
 
-    pass
+    #pass
 
     pass
   
@@ -122,66 +131,31 @@ class Perceptron:
       * use weight averages instead of final iteration weights
 
       """
-      global BOW
+      documentId=1
+      global eta
       global weights
-      global features
-      global BOW1
-      global posBOW
-      global negBOW
-
-      for example in split.train:
-        words = example.words
-        self.addExample(example.klass, words)
-
-
-
-      i = 0
-
-      posBOW = sorted(posBOW, key=posBOW.get,
-                      reverse=True)  # sort the map of BOW1 based on value of each key in descending order
-      negBOW = sorted(negBOW, key=negBOW.get,
-                      reverse=True)  # sort the map of BOW1 based on value of each key in descending order
-      list1 = posBOW[:maxWords / 2] + list(negBOW[:maxWords / 2])
-      BOW = set(list1)
-      global posFeatures
-      global negFeatures
-      # TODO now we have to train our classifiers
-      n = len(BOW)
-      # print "Length is ",n
-      features = []
-      negFeatures = []
-      posFeatures = []
-
-      features = list(BOW)
-      features.append('1')
-      negFeatures = list(negBOW)
-      posFeatures = list(posBOW)
-
-      global length
-      length = n + 1
-      X = np.zeros(((n + 1),
-                    1))  # fills all X with 0s initially. Then start changing X based on input we are talking about in the document
-      weights = np.zeros(((n + 1), 1))
-      weights = np.random.rand(n + 1, 1)
-      for i in range(0,n):
-       r=features[i]
-       weights[i,0] = -np.random.random()
-
-
       for i in range(0, iterations):
+        print "Iteration ",i
+        documentId=1
         for example in split.train:
           words = example.words
-          X=findFeatureMatrixForDataSet(words)
+          X=findFeatureMatrixForDataSet(words,documentId)
+          documentId=documentId+1
           arr = np.dot(weights.transpose(),X)
           score=arr[0,0]
           y=0
-          if (score>=0 and example.klass=='pos') or (score<0 and example.klass=='neg'):
+          if (score>=0 and example.klass=='neg') or (score<0 and example.klass=='pos'):
             if example.klass == 'pos':
               y=1
             if example.klass == 'neg':
               y=0
-            weights=weights+(y-score)*X
-
+            #print score
+            expected=y
+            result=score
+            error = expected - unit_step(result)
+            weights=weights+eta*error*X
+        #eta=eta/100
+        print "Weights *********", weights.transpose()
 
 
   # END TODO (Modify code beyond here with caution)
@@ -208,7 +182,64 @@ class Perceptron:
     """
     return s.split()
 
-  
+  def initializeBOW(self, splits):
+        global BOW
+        global weights
+        global features
+        global BOW1
+        global posBOW
+        global negBOW
+        global maxWords
+        for split in splits:
+            for example in split.train:
+                words = example.words
+                self.addExample(example.klass, words)
+        i = 0
+
+        print "posBOW is ",posBOW
+        print len(posBOW)
+        posBOW = sorted(posBOW, key=posBOW.get,
+                        reverse=True)  # sort the map of BOW1 based on value of each key in descending order
+        negBOW = sorted(negBOW, key=negBOW.get,
+                        reverse=True)  # sort the map of BOW1 based on value of each key in descending order
+        list1 = []
+        if maxWords > 0 and maxWords < len(posBOW):
+            list1 = posBOW[:maxWords / 2]
+        else:
+            list1 = list(posBOW)
+        if maxWords > 0 and maxWords < len(negBOW):
+            list1 = list1 + list(negBOW[:maxWords / 2])
+        else:
+            list1 = list1 + list(negBOW)
+        BOW = set(list1)
+        global posFeatures
+        global negFeatures
+        # TODO now we have to train our classifiers
+        n = len(BOW)
+        # print "Length is ",n
+        features = []
+        negFeatures = []
+        posFeatures = []
+
+        features = list(BOW)
+        features.append('1')
+        negFeatures = list(negBOW)
+        posFeatures = list(posBOW)
+        print "Total Number of Features ",n+1
+        print "Features ",features
+        global length
+        length = n + 1
+        X = np.zeros(((n + 1),
+                      1))  # fills all X with 0s initially. Then start changing X based on input we are talking about in the document
+        weights = np.zeros(((length), 1))
+        weights = np.random.rand(length,1)/10
+        for i in range(n/2,n+1):
+           r=features[i]
+           weights[i,0] = -weights[i,0]
+
+        print "features ", features
+        print "weights ", weights.transpose()
+
   def trainSplit(self, trainDir):
     """Takes in a trainDir, returns one TrainSplit with train set."""
     split = self.TrainSplit()
@@ -229,7 +260,7 @@ class Perceptron:
 
   def crossValidationSplits(self, trainDir):
     """Returns a lsit of TrainSplits corresponding to the cross validation splits."""
-    splits = [] 
+    splits = []
     posTrainFileNames = os.listdir('%s/pos/' % trainDir)
     negTrainFileNames = os.listdir('%s/neg/' % trainDir)
     #for fileName in trainFileNames:
@@ -253,7 +284,8 @@ class Perceptron:
           split.train.append(example)
       splits.append(split)
     return splits
-  
+
+
 
 def test10Fold(args):
   pt = Perceptron()
@@ -262,6 +294,8 @@ def test10Fold(args):
   splits = pt.crossValidationSplits(args[0])
   avgAccuracy = 0.0
   fold = 0
+  classifier = Perceptron()
+  classifier.initializeBOW(splits)
   for split in splits:
     classifier = Perceptron()
     accuracy = 0.0
@@ -298,7 +332,10 @@ def classifyDir(trainDir, testDir,iter):
   accuracy = accuracy / len(testSplit.train)
   print '[INFO]\tAccuracy: %f' % accuracy
 
-def findFeatureMatrixForDataSet(words):
+def findFeatureMatrixForDataSet(words,documentId):
+  global XMap
+  if documentId!=None and documentId in XMap:
+      return XMap[documentId]
   pos=0
   val=0
   X=np.zeros((length,1))
@@ -307,7 +344,8 @@ def findFeatureMatrixForDataSet(words):
     if word in features:
       i=features.index(word)
       X[i]=X[i]+1  #here X is represented by total number of repetitions of the word
-  return X
+  XMap[documentId]=X
+  return XMap[documentId]
 
 def main():
   (options, args) = getopt.getopt(sys.argv[1:], '')

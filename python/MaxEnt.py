@@ -25,7 +25,9 @@ global X
 global weights
 global positiveWords
 global negativeWords
+global XMap
 
+XMap={'A':'B'}
 BOW = set()
 #these are maps of word with corresponding counts
 BOW1 = {}
@@ -93,7 +95,7 @@ class Maxent:
     """ TODO
       'words' is a list of words to classify. Return 'pos' or 'neg' classification.
     """
-    X = findFeatureMatrixForDataSet(words)
+    X = findFeatureMatrixForDataSet(words,None)
     probPos=summation(1,X)
     probNeg=summation(0,X)
     if probPos+probNeg>=0:
@@ -173,7 +175,15 @@ class Maxent:
 
       posBOW = sorted(posBOW,key=posBOW.get, reverse=True) #sort the map of BOW1 based on value of each key in descending order
       negBOW = sorted(negBOW, key=negBOW.get,reverse=True)  # sort the map of BOW1 based on value of each key in descending order
-      list1=posBOW[:maxWords / 2]+list(negBOW[:maxWords / 2])
+      if maxWords>0 and maxWords<len(posBOW):
+        list1 = posBOW[:maxWords / 2]
+      else:
+          list1=list(posBOW)
+      if maxWords>0 and maxWords<len(negBOW):
+        list1=list1+list(negBOW[:maxWords / 2])
+      else:
+          list1=list1+list(negBOW)
+
       BOW=set(list1)
       print "BOW "
       print BOW
@@ -197,9 +207,9 @@ class Maxent:
       weights = np.zeros(((n+1),1))
 
 
-      weights=np.random.rand(n+1,1)
+      weights=np.random.rand(n+1,1)/10
 
-      for i in range(n/2,n):
+      for i in range(n/2,n+1):
            weights[i]=-weights[i]
 
        # for i in range(0,n):
@@ -315,10 +325,7 @@ def test10Fold(args):
       words = example.words
       guess = classifier.classify(words)
       if example.klass == guess:
-        print 'Correct Guess ',example.klass
         accuracy += 1.0
-      else:
-        print 'Wrong Guess ',example.klass
     if len(split.test)!=0:
       accuracy = accuracy / len(split.test)
       avgAccuracy += accuracy
@@ -390,7 +397,7 @@ def summation(y,X):
 def gradientDescent(splits,epsilon,eta,lambdaa):
   global weights
   delta=1000000
-  maxCount=100
+  maxCount=500
   count=1
 
   print "Weights ", weights
@@ -408,7 +415,8 @@ def gradientDescent(splits,epsilon,eta,lambdaa):
         if count>maxCount:
           break
         words = example.words  #each document
-        X = findFeatureMatrixForDataSet(words)
+        X = findFeatureMatrixForDataSet(words,i)
+        i = i + 1
         posSum=summation(1,X)
         negSum=summation(0,X)
         dif = negSum + posSum
@@ -430,7 +438,6 @@ def gradientDescent(splits,epsilon,eta,lambdaa):
         delta=findDelta(weights,currentWeights)
         count=count+1
         weights = currentWeights
-      i=i+1
 
   printResults()
 
@@ -443,16 +450,21 @@ def findDelta(weights,currentWeights):
 
 #returns either 1 or 0 based on if feature is found or not
 
-def findFeatureMatrixForDataSet(words):
-  pos=0
-  val=0
-  X=np.zeros((length,1))
+def findFeatureMatrixForDataSet(words,documentId):
+  global XMap
+  if documentId != None and documentId in XMap:
+    return XMap[documentId]
+
+  pos = 0
+  val = 0
+  X = np.zeros((length, 1))
   for word in words:
-    word=stemmer.stem(word.lower())
+    word = stemmer.stem(word.lower())
     if word in features:
-      i=features.index(word)
-      X[i]=1
-  return X
+      i = features.index(word)
+      X[i] = X[i] + 1  # here X is represented by total number of repetitions of the word
+  XMap[documentId] = X
+  return XMap[documentId]
 
 def printResults():
   print "Weight Array "

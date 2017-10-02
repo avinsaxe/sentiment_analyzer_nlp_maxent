@@ -4,3 +4,6 @@
 python Perceptron.py ../data/imdb1/ 1
 
 python MaxEnt.py ../data/imdb1 ../data/imdb1/ 10
+
+Perceptron Very Helpful Link
+http://web.engr.oregonstate.edu/~xfern/classes/cs534/notes/perceptron-4-11.pdf
