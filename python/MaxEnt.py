@@ -327,9 +327,9 @@ def test10Fold(epsilon1,eta1,trainDir1,testDir1,maxWords1,maxCount1):
   classifier.train(splits, epsilon, eta, lambdaa)
 
   # print "Weights of Features"
-  # for i in range(0,len(weights)-1):
+  # for i in range(0,len(weights)-1):///
   #   print features[i]," =  ",weights[i]
-
+  output=''
   for split in splits:
     accuracy = 0.0
     for example in split.test:
@@ -341,15 +341,18 @@ def test10Fold(epsilon1,eta1,trainDir1,testDir1,maxWords1,maxCount1):
       accuracy = accuracy / len(split.test)
       avgAccuracy += accuracy
       print '[INFO]\tFold %d Accuracy: %f' % (fold, accuracy)
+      output=output+'[INFO]\tFold %d Accuracy: %f' % (fold, accuracy)+'\n'
       fold += 1
   avgAccuracy = avgAccuracy / fold
   print '[INFO]\tAccuracy: %f' % avgAccuracy
-
+  output=output+'[INFO]\tAccuracy: %f' % avgAccuracy+'\n'
+  return output
 
 def classifyDir(epsilon1, eta1, trainDir1, testDir1, maxWords1, maxCount1):
   global epsilon, eta, delta, trainDir, testDir, maxWords, maxCount
   epsilon = epsilon1
   eta = eta1
+  output=''
 
   trainDir = trainDir1
   testDir = testDir1
@@ -372,6 +375,8 @@ def classifyDir(epsilon1, eta1, trainDir1, testDir1, maxWords1, maxCount1):
       accuracy += 1.0
   accuracy = accuracy / len(testSplit.train)
   print '[INFO]\tAccuracy: %f' % accuracy
+  output=output+'[INFO]\tAccuracy: %f' % accuracy+'\n'
+  return output
 
 #**********************Gradient Descent and others*********************
 
@@ -474,11 +479,11 @@ def printResults():
 def main(methodName,epsilon,eta,maxCount,maxWords,testDir,trainDir):
 
   if methodName=='classifyDir':
-    classifyDir(epsilon,eta,trainDir,testDir,maxWords,maxCount)
+    return classifyDir(epsilon,eta,trainDir,testDir,maxWords,maxCount)
   elif methodName=='test10Fold':
-    test10Fold(epsilon,eta,trainDir,testDir,maxWords,maxCount)
+    return test10Fold(epsilon,eta,trainDir,testDir,maxWords,maxCount)
 
 
 if __name__ == "__main__":
-    #main('test10Fold', 0.1, 2, 50, 1000, '../data/imdb1') #test10Fold takes only training directory and uses 10 fold to solve it
-    main('classifyDir',0.1,2,50,10000,'../data/imdb1','../data/imdb1')
+    main('test10Fold', 0.1, 2, 50, 1000, '../data/imdb1') #test10Fold takes only training directory and uses 10 fold to solve it
+    #main('classifyDir',0.1,2,50,100,'../data/imdb1','../data/imdb1')

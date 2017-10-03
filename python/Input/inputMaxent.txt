@@ -1,0 +1,2 @@
+test10Fold 0.01 2 100 10000 ../data/imdb1 ../data/imdb1
+classifyDir 0.01 2 100 10000 ../data/imdb1 ../data/imdb1

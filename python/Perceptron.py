@@ -286,6 +286,7 @@ def test10Fold(iterations,maxWords1,eta1,trainDir):
   fold = 0
   classifier = Perceptron()
   classifier.initializeBOW(splits)
+  output=''
   for split in splits:
     classifier = Perceptron()
     accuracy = 0.0
@@ -299,11 +300,13 @@ def test10Fold(iterations,maxWords1,eta1,trainDir):
     if len(split.test)!=0:
       accuracy = accuracy / len(split.test)
     avgAccuracy += accuracy
-    print '[INFO]\tFold %d Accuracy: %f' % (fold, accuracy) 
+    print '[INFO]\tFold %d Accuracy: %f' % (fold, accuracy)
+    output=output+'[INFO]\tFold %d Accuracy: %f' % (fold, accuracy) +'\n'
     fold += 1
   avgAccuracy = avgAccuracy / fold
   print '[INFO]\tAccuracy: %f' % avgAccuracy
-    
+  output=output+'[INFO]\tAccuracy: %f' % avgAccuracy+'\n'
+  return output
     
 def classifyDir(iter,maxWords1,eta1,trainDir1, testDir1):
   global maxWords
@@ -325,6 +328,7 @@ def classifyDir(iter,maxWords1,eta1,trainDir1, testDir1):
       accuracy += 1.0
   accuracy = accuracy / len(testSplit.train)
   print '[INFO]\tAccuracy: %f' % accuracy
+  return '[INFO]\tAccuracy: %f' % accuracy
 
 def findFeatureMatrixForDataSet(words,documentId):
   global XMap
@@ -344,10 +348,10 @@ def findFeatureMatrixForDataSet(words,documentId):
 
 def main(methodName,eta,maxWords,testDir,trainDir,iterations):
     if methodName=='test10Fold':
-        test10Fold(iterations,maxWords,eta,trainDir)
+        return test10Fold(iterations,maxWords,eta,trainDir)
     elif methodName=='classifyDir':
-        classifyDir(iterations,maxWords,eta,trainDir,testDir)
+        return classifyDir(iterations,maxWords,eta,trainDir,testDir)
 
 if __name__ == "__main__":
     main('test10Fold',1, 1000, '../data/imdb1',100)
-    main('classifyDir',1,1000,'../data/imdb1','../data/imdb1',100)
+    #main('classifyDir',1,1000,'../data/imdb1','../data/imdb1',100)
